@@ -1,0 +1,13 @@
+{
+    "name": "Scrollable",
+    "version": "0.1.0",
+    "description": "My Electron app",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "dependencies": {
+        "bootstrap": "^5.0.0-beta1",
+        "electron": "^11.1.0"
+    }
+}
