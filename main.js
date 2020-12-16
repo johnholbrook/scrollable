@@ -17,7 +17,7 @@ function createDisplayWindow () {
 
 function createControllerWindow () {
   controllerWindow = new BrowserWindow({
-    width: 800,
+    width: 600,
     height: 600,
     webPreferences: {
       nodeIntegration: true
@@ -28,8 +28,8 @@ function createControllerWindow () {
 }
 
 app.whenReady().then(() => {
-  createControllerWindow();
   createDisplayWindow();
+  createControllerWindow();
 
   controllerWindow.on('closed', function () {
     controllerWindow = null;

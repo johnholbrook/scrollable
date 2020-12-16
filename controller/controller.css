@@ -1,0 +1,27 @@
+#navTabs{
+    margin:1em;
+    font-size: x-large;
+}
+
+#tabContent{
+    margin: 2em;
+}
+
+#table-data-input{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body{
+    text-align: center;
+}
+
+.image-preview{
+    max-height: 2em;
+    /* margin-left: 1em; */
+}
+
+.image-draggable-element{
+    margin:0.25em;
+    background-color: #ddd;
+    text-align: left;
+}
