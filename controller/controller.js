@@ -1,3 +1,6 @@
+const { remote } = require('electron');
+var displayWindow = remote.getGlobal('displayWindow');
+
 // returns true if a file name corresponds to a known image type
 function isImage(name){
     let extension = name.split(".").slice(-1)[0];
@@ -5,8 +8,43 @@ function isImage(name){
     return image_extensions.indexOf(extension) > -1
 }
 
+function download(data, filename, type) {
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
+    // load data from file
+    document.querySelector("#data-file").onchange = () => {
+        document.querySelector("#data-file").files[0].text().then(text => {
+            document.querySelector("#table-data-input").value = text;
+        });
+    };
+
+    // save data to file
+    document.querySelector("#save-to-file").onclick = () => {
+        download(document.querySelector("#table-data-input").value, "data.csv", "text/plain");
+    };
     
+    // send data to display window
+    document.querySelector("#apply-data").onclick = () => {
+        displayWindow.webContents.send("set-data", document.querySelector("#table-data-input").value);
+    };
+
     // update images when new directory is selected
     document.querySelector("#image-directory").onchange = () => {
         // get the files from the picker and keep only the image files
