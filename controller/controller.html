@@ -55,30 +55,54 @@
 
             <!-- APPEARANCE tab content -->
             <div class="tab-pane fade" id="appearance" role="tabpanel" aria-labelledby="appearance-tab">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="card mb-3">
-                            <div class="card-header">Scroll Speed</div>
-                            <div class="card-body">
-                                <input type="range" class="form-range" id="scroll-speed">
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">Background Color</div>
-                            <div class="card-body">
-                                <input type="color" class="form-control forn-control-color" id="bg-color" value="#FFFFFF">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card">
-                            <div class="card-header">Font Size</div>
-                            <div class="card-body">
-                                <input type="range" class="form-range" id="font-size">
-                            </div>
-                        </div>
-                    </div>
+                <div class="input-group mb-3 d-flex">
+                    <span class="input-group-text">Scroll Speed</span>
+                    <span class="input-group-text white flex-grow-1">
+                        <input type="range" class="form-range" id="scroll_speed" min="5" max="200" value="70" step="5">
+                    </span>
+                    <span class="input-group-text" id="current_scroll_speed">70 px/s</span>
                 </div>
+
+                <div class="input-group mb-3 d-flex">
+                    <span class="input-group-text">Font Size</span>
+                    <span class="input-group-text white flex-grow-1">
+                        <input type="range" class="form-range" id="font_size" min="1" max="20" value="12" step="1">
+                    </span>
+                    <span class="input-group-text" id="current_font_size">12</span>
+                </div>
+
+                <div class="input-group mb-3 d-flex">
+                    <span class="input-group-text">Frame Rate</span>
+                    <span class="input-group-text white flex-grow-1">
+                        <input type="range" class="form-range" id="framerate" min="5" max="60" value="45" step="5">
+                    </span>
+                    <span class="input-group-text" id="current_framerate">45 FPS</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Theme:</span>
+                    <span class="btn-group flex-grow-1" role="group">
+                        <input type="radio" class="btn-check" name="btnradio-appearance" id="appearance-light" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="appearance-light">Light</label>
+                        
+                        <input type="radio" class="btn-check" name="btnradio-appearance" id="appearance-dark" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="appearance-dark">Dark</label>
+                    </span>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-text">First Row Is:</span>
+                    <span class="btn-group flex-grow-1" role="group">
+                        <input type="radio" class="btn-check" name="btnradio-first-row" id="first-row-header" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="first-row-header">Header</label>
+                        
+                        <input type="radio" class="btn-check" name="btnradio-first-row" id="first-row-data" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="first-row-data">Data</label>
+                    </span>
+                </div>
+
+
+                
             </div>
         </div>
     </body>

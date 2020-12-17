@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         files.sort();
 
         // Send file list to display window
-        // displayWindow.send("set-imgs", new_list);
+        displayWindow.send("set-imgs", new_list);
 
         // set content of "Image Order" card
         document.querySelector("#image-ordering").innerHTML = ""
@@ -88,8 +88,49 @@ document.addEventListener("DOMContentLoaded", () => {
                     new_list.push(child.getAttribute("path"));
                 }
                 console.log(new_list);
-                // displayWindow.send("set-imgs", new_list);
+                displayWindow.send("set-imgs", new_list);
             }
         });
     };
+
+    // change scroll speed
+    document.querySelector("#scroll_speed").oninput = () => {
+        let val = document.querySelector("#scroll_speed").value;
+        document.querySelector("#current_scroll_speed").innerHTML= `${val} px/s`;
+        displayWindow.webContents.send("set-scroll-speed", val);
+    };
+
+    // change font size
+    document.querySelector("#font_size").oninput = () => {
+        let val = document.querySelector("#font_size").value;
+        document.querySelector("#current_font_size").innerHTML = val;
+        displayWindow.webContents.send("set-font-size", val);
+    };
+
+    // change frame rate
+    document.querySelector("#framerate").oninput = () => {
+        let val = document.querySelector("#framerate").value;
+        document.querySelector("#current_framerate").innerHTML = `${val} FPS`;
+        displayWindow.webContents.send("set-framerate", val);
+    };
+
+    // set light mode
+    document.querySelector("#appearance-light").onclick = () => {
+        displayWindow.webContents.send("set-appearance", "light");
+    }
+
+    // set dark mode
+    document.querySelector("#appearance-dark").onclick = () => {
+        displayWindow.webContents.send("set-appearance", "dark");
+    }
+
+    // first row is header
+    document.querySelector("#first-row-header").onclick = () => {
+        displayWindow.webContents.send("set-header", true);
+    }
+
+    // first row is data
+    document.querySelector("#first-row-data").onclick = () => {
+        displayWindow.webContents.send("set-header", false);
+    }
 });
