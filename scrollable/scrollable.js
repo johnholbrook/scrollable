@@ -26,8 +26,8 @@ class Scrollable{
         // this.extraClasses = options.hasOwnProperty("extraClasses") ? options.extraClasses : this.#defaults.extraClasses;
         // this.showStickyHeaders = options.hasOwnProperty("showStickyHeaders") ? options.showStickyHeaders : this.#defaults.showStickyHeaders;
 
-        this.updateOptions(Scrollable.#defaults);
-        this.updateOptions(options);
+        this.updateOptions(Scrollable.#defaults, false);
+        this.updateOptions(options, false);
 
         this.display.innerHTML = `<div style="/*display:inline-block; vertical-align:top;*/  position:fixed; left:50%; transform:translate(-50%); width:90%; background: white;"></div>
         <div style="position:fixed; left:50%; transform:translate(-50%); width:90%; z-index: -1;"></div>`;
@@ -42,14 +42,14 @@ class Scrollable{
      * Update the specified options
      * @param {Object} options 
      */
-    updateOptions(options){
+    updateOptions(options, start=true){
         this.speed = options.hasOwnProperty("speed") ? options.speed : this.speed;
         this.fps = options.hasOwnProperty("fps") ? options.fps : this.fps;
         this.extraClasses = options.hasOwnProperty("extraClasses") ? options.extraClasses : this.extraClasses;
         this.showStickyHeaders = options.hasOwnProperty("showStickyHeaders") ? options.showStickyHeaders : this.showStickyHeaders;
 
         this.#updateStickyHeaders();
-        this.start();
+        if (start) this.start();
     }
 
     /**
