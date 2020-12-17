@@ -30,11 +30,25 @@
                         <input type="file" class="form-control" id="data-file" accept=".csv">
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-primary" id="save-to-file">Save To File</button>
+                        <button class="btn btn-primary w-100" id="save-to-file">Save To File</button>
                     </div>
                 </div>
-                <div class="d-grid col-6 mx-auto">
-                    <button class="btn btn-success" id="apply-data">Apply</button>
+                <div class="row">
+                    <div class="d-grid col-6 mx-auto">
+                        <div class="input-group">
+                            <span class="input-group-text">First Row Is:</span>
+                            <span class="btn-group flex-grow-1" role="group">
+                                <input type="radio" class="btn-check" name="btnradio-first-row" id="first-row-header" autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="first-row-header">Header</label>
+                                
+                                <input type="radio" class="btn-check" name="btnradio-first-row" id="first-row-data" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="first-row-data">Data</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-grid col-6 mx-auto">
+                        <button class="btn btn-success" id="apply-data">Apply</button>
+                    </div>
                 </div>
             </div>
 
@@ -66,9 +80,9 @@
                 <div class="input-group mb-3 d-flex">
                     <span class="input-group-text">Font Size</span>
                     <span class="input-group-text white flex-grow-1">
-                        <input type="range" class="form-range" id="font_size" min="1" max="20" value="12" step="1">
+                        <input type="range" class="form-range" id="font_size" min="1" max="10" value="6" step="1">
                     </span>
-                    <span class="input-group-text" id="current_font_size">12</span>
+                    <span class="input-group-text" id="current_font_size">6</span>
                 </div>
 
                 <div class="input-group mb-3 d-flex">
@@ -91,13 +105,13 @@
                 </div>
 
                 <div class="input-group">
-                    <span class="input-group-text">First Row Is:</span>
+                    <span class="input-group-text">Stick Header to Top:</span>
                     <span class="btn-group flex-grow-1" role="group">
-                        <input type="radio" class="btn-check" name="btnradio-first-row" id="first-row-header" autocomplete="off" checked>
-                        <label class="btn btn-outline-primary" for="first-row-header">Header</label>
+                        <input type="radio" class="btn-check" name="btnradio-sticky-header" id="sticky-header" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="sticky-header">Yes</label>
                         
-                        <input type="radio" class="btn-check" name="btnradio-first-row" id="first-row-data" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="first-row-data">Data</label>
+                        <input type="radio" class="btn-check" name="btnradio-sticky-header" id="no-sticky-header" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="no-sticky-header">No</label>
                     </span>
                 </div>
 

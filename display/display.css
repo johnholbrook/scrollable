@@ -1,4 +1,13 @@
+:root{
+    --table-font-size: 3em;
+}
+
 .scrollable-table, .scrollable-sticky-header{
-    font-size: 3em;
+    /* font-size: 3em; */
+    font-size: var(--table-font-size);
     text-align: center;
+}
+
+body{
+    /* background-color: var(--bs-dark); */
 }

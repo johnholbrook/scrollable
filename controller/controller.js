@@ -42,7 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // send data to display window
     document.querySelector("#apply-data").onclick = () => {
-        displayWindow.webContents.send("set-data", document.querySelector("#table-data-input").value);
+        let data = {
+            firstRowHeader: document.querySelector("#first-row-header").checked,
+            data: document.querySelector("#table-data-input").value
+        }
+        displayWindow.webContents.send("set-data", data);
     };
 
     // update images when new directory is selected
@@ -60,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         files.sort();
 
         // Send file list to display window
-        displayWindow.send("set-imgs", new_list);
+        displayWindow.send("set-imgs", files);
 
         // set content of "Image Order" card
         document.querySelector("#image-ordering").innerHTML = ""
@@ -124,13 +128,25 @@ document.addEventListener("DOMContentLoaded", () => {
         displayWindow.webContents.send("set-appearance", "dark");
     }
 
-    // first row is header
-    document.querySelector("#first-row-header").onclick = () => {
-        displayWindow.webContents.send("set-header", true);
+    // show sticky header
+    document.querySelector("#sticky-header").onclick = () => {
+        displayWindow.webContents.send("set-sticky-header", true);
     }
 
-    // first row is data
-    document.querySelector("#first-row-data").onclick = () => {
-        displayWindow.webContents.send("set-header", false);
+    // don't show sticky header
+    document.querySelector("#no-sticky-header").onclick = () => {
+        displayWindow.webContents.send("set-sticky-header", false);
     }
+
+    // // first row is header
+    // document.querySelector("#first-row-header").onclick = () => {
+    //     displayWindow.webContents.send("set-header", true);
+    // }
+
+    // // first row is data
+    // document.querySelector("#first-row-data").onclick = () => {
+    //     displayWindow.webContents.send("set-header", false);
+    // }
+
+
 });

@@ -21,11 +21,6 @@ class Scrollable{
         //initialize options
         this.display = display;
 
-        // this.speed = options.hasOwnProperty("speed") ? options.speed : this.#defaults.speed;
-        // this.fps = options.hasOwnProperty("fps") ? options.fps : this.#defaults.fps;
-        // this.extraClasses = options.hasOwnProperty("extraClasses") ? options.extraClasses : this.#defaults.extraClasses;
-        // this.showStickyHeaders = options.hasOwnProperty("showStickyHeaders") ? options.showStickyHeaders : this.#defaults.showStickyHeaders;
-
         this.updateOptions(Scrollable.#defaults, false);
         this.updateOptions(options, false);
 
@@ -48,8 +43,10 @@ class Scrollable{
         this.extraClasses = options.hasOwnProperty("extraClasses") ? options.extraClasses : this.extraClasses;
         this.showStickyHeaders = options.hasOwnProperty("showStickyHeaders") ? options.showStickyHeaders : this.showStickyHeaders;
 
-        this.#updateStickyHeaders();
-        if (start) this.start();
+        // this.#updateStickyHeaders();
+        if (start){
+            this.start();
+        }
     }
 
     /**
@@ -90,6 +87,8 @@ class Scrollable{
         this.stop();
         this.#updating = setInterval(this.#advanceScroll.bind(this), 1000/this.fps);
         this.#updateStickyHeaders();
+
+        this.#table.className = `scrollable-table ${this.extraClasses}`;
     }
 
     /**
@@ -156,7 +155,7 @@ class Scrollable{
         //has the top element gone off the screen? if so, remove it
         if (this.#current_scroll >= this.scrollable_container.firstElementChild.offsetHeight) {
             // current_scroll = -1 * document.documentElement.clientHeight;
-            console.log("top element has gone off screen, removing it");
+            // console.log("top element has gone off screen, removing it");
             let scrollable = this.scrollable_container;
             scrollable.removeChild(scrollable.firstElementChild);
             this.#current_scroll = 0;
@@ -196,7 +195,8 @@ class Scrollable{
                 header.style.margin = 0;
     
                 //build the initial list of headers
-                let th_list = this.scrollable_container.querySelectorAll("th");
+                // let th_list = this.scrollable_container.querySelectorAll("th");
+                let th_list = this.scrollable_container.querySelector(".scrollable-table").querySelectorAll("th");
                 let header_row = document.createElement("tr")
                 th_list.forEach(item => {
                     let tmp = document.createElement("th");
