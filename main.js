@@ -1,7 +1,9 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 
 global.displayWindow = null;
 global.controllerWindow = null
+
+var isDev = !app.isPackaged;
 
 function createDisplayWindow () {
   displayWindow = new BrowserWindow({
@@ -30,6 +32,11 @@ function createControllerWindow () {
 }
 
 app.whenReady().then(() => {
+  if (!isDev){
+    const winMenu = Menu.buildFromTemplate([]);
+    Menu.setApplicationMenu(winMenu);
+  }
+  
   createDisplayWindow();
   createControllerWindow();
 
