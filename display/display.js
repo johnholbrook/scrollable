@@ -8,7 +8,7 @@ function range(start, end) {
 
 var table;
 document.addEventListener("DOMContentLoaded", () => {
-        table = new Scrollable(document.querySelector("#test"), {
+        table = new Scrollable(document.querySelector("#display-area"), {
         "extraClasses" : "table table-striped table-borderless",
     });
 
@@ -43,10 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data == "dark"){
             document.querySelector("body").style.backgroundColor = "var(--bs-dark)";
             table.updateOptions({extraClasses: "table table-striped table-borderless table-dark"});
+            document.querySelectorAll(".scrollable-table").forEach(table => {
+                table.classList.toggle("table-dark", true);
+            });
         }
         else{
             document.querySelector("body").style.backgroundColor = "var(--bs-light)";
             table.updateOptions({extraClasses: "table table-striped table-borderless"});
+            document.querySelectorAll(".scrollable-table").forEach(table => {
+                table.classList.toggle("table-dark", false);
+            });
         }
     });
 
