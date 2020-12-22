@@ -4,6 +4,7 @@ global.displayWindow = null;
 global.controllerWindow = null
 
 var isDev = !app.isPackaged;
+var isMac = process.platform === "darwin";
 
 function createDisplayWindow () {
   displayWindow = new BrowserWindow({
@@ -31,9 +32,13 @@ function createControllerWindow () {
   controllerWindow.loadFile('controller/controller.html')
 }
 
+const macMenuTemplate = [
+  {role: "appMenu"}
+];
+
 app.whenReady().then(() => {
   if (!isDev){
-    const winMenu = Menu.buildFromTemplate([]);
+    const winMenu = Menu.buildFromTemplate(isMac ? macMenuTemplate : []);
     Menu.setApplicationMenu(winMenu);
   }
   
