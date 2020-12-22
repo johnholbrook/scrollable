@@ -1,15 +1,28 @@
 {
     "name": "Scrollable",
+    "author": "John Holbrook",
     "version": "0.1.0",
     "description": "My Electron app",
     "main": "main.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "dist": "electron-builder"
     },
     "dependencies": {
         "bootstrap": "^5.0.0-beta1",
         "convert-csv-to-array": "^1.0.3",
-        "electron": "^11.1.0",
         "sortablejs": "^1.12.0"
+    },
+    "devDependencies": {
+        "electron": "^11.1.0",
+        "electron-builder": "^22.9.1"
+    },
+    "build": {
+        "appId": "com.fll-timer.scrollable",
+        "mac": {
+            "category": "public.app-category.entertainment",
+            "target": "zip",
+            "icon": "build/test.png"
+        }
     }
 }
