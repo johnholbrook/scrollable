@@ -18,7 +18,7 @@ function createDisplayWindow () {
 
 function createControllerWindow () {
   controllerWindow = new BrowserWindow({
-    width: 600,
+    width: process.platform === "win32" ? 650 : 600,
     height: 600,
     webPreferences: {
       nodeIntegration: true,
