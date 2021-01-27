@@ -1,11 +1,11 @@
 class Scrollable{
-    #current_scroll = 1;
-    #updating = null;
-    #last_time = null;
-    #table = null;
-    #current_img = 0;
+    _current_scroll = 1;
+    _updating = null;
+    _last_time = null;
+    _table = null;
+    _current_img = 0;
 
-    static #defaults = {
+    static _defaults = {
         "speed": 70,//pixels per second
         "fps": 45,//table scroll frames per second
         "tableClasses": "",//extra classes to apply to the table object
@@ -21,7 +21,7 @@ class Scrollable{
         //initialize options
         this.display = display;
 
-        this.updateOptions(Scrollable.#defaults, false);
+        this.updateOptions(Scrollable._defaults, false);
         this.updateOptions(options, false);
 
         this.display.innerHTML = `<div style="/*display:inline-block; vertical-align:top;*/  position:fixed; left:50%; transform:translate(-50%); width:90%; background: white;"></div>
@@ -43,7 +43,7 @@ class Scrollable{
         this.extraClasses = options.hasOwnProperty("extraClasses") ? options.extraClasses : this.extraClasses;
         this.showStickyHeaders = options.hasOwnProperty("showStickyHeaders") ? options.showStickyHeaders : this.showStickyHeaders;
 
-        // this.#updateStickyHeaders();
+        // this._updateStickyHeaders();
         if (start){
             this.start();
         }
@@ -55,8 +55,10 @@ class Scrollable{
      * @param {Boolean} useHeaders - Treat first row of table as headers
      */
     setTable(content, useHeaders=true){
-        this.#table = this.#generateTable(content, useHeaders);
-        this.scrollable_container.appendChild(this.#table.cloneNode(true));
+        this._table = this._generateTable(content, useHeaders);
+        if (this.scrollable_container.childElementCount == 0 && this._table != null){
+            this.scrollable_container.appendChild(this._table.cloneNode(true));
+        }
     }
 
     /**
@@ -71,31 +73,32 @@ class Scrollable{
      * Get the path of the next image to display
      * @returns {String}
      */
-    #getNextImage(){
-        this.#current_img += 1;
-        if (this.#current_img >= this.image_files.length){
-            this.#current_img = 0;
+    _getNextImage(){
+        this._current_img += 1;
+        if (this._current_img >= this.image_files.length){
+            this._current_img = 0;
         }
-        return this.image_files[this.#current_img];
+        return this.image_files[this._current_img];
     }
 
     /**
      * Start scrolling
      */
     start(){        
-        this.#last_time = Date.now();
-        this.stop();
-        this.#updating = setInterval(this.#advanceScroll.bind(this), 1000/this.fps);
-        this.#updateStickyHeaders();
 
-        this.#table.className = `scrollable-table ${this.extraClasses}`;
+        this._last_time = Date.now();
+        this.stop();
+        this._updating = setInterval(this._advanceScroll.bind(this), 1000/this.fps);
+        this._updateStickyHeaders();
+
+        this._table.className = `scrollable-table ${this.extraClasses}`;
     }
 
     /**
      * Stop scrolling
      */
     stop(){
-        clearInterval(this.#updating);
+        clearInterval(this._updating);
     }
 
     /**
@@ -104,11 +107,13 @@ class Scrollable{
      * @param {Boolean} useHeaders
      * @returns {HTMLElement}
      */
-    #generateTable(content, useHeaders){
+    _generateTable(content, useHeaders){
         let parser = new DOMParser();
         let doc = parser.parseFromString("", "text/html");
         let table = doc.createElement("table");
         table.className = `scrollable-table ${this.extraClasses}`;
+
+        if (content == []) return null;
 
         // add first row as header (if applicable)
         if (useHeaders){
@@ -142,36 +147,36 @@ class Scrollable{
     /**
      * Advance the scrolling by the appropriate amount. Called once per frame.
      */
-    #advanceScroll(){
+    _advanceScroll(){
         //update the position of the table
         let now = Date.now();
-        let time_elapsed = now - this.#last_time;
+        let time_elapsed = now - this._last_time;
         let amt_to_scroll = time_elapsed * this.speed/1000;
-        this.#current_scroll += amt_to_scroll;
-        this.#last_time = now;
+        this._current_scroll += amt_to_scroll;
+        this._last_time = now;
 
-        this.scrollable_container.style.top = -this.#current_scroll + "px";
+        this.scrollable_container.style.top = -this._current_scroll + "px";
 
         //has the top element gone off the screen? if so, remove it
-        if (this.#current_scroll >= this.scrollable_container.firstElementChild.offsetHeight) {
+        if (this._current_scroll >= this.scrollable_container.firstElementChild.offsetHeight) {
             // current_scroll = -1 * document.documentElement.clientHeight;
             // console.log("top element has gone off screen, removing it");
             let scrollable = this.scrollable_container;
             scrollable.removeChild(scrollable.firstElementChild);
-            this.#current_scroll = 0;
-            scrollable.style.top = -this.#current_scroll + 'px';
+            this._current_scroll = 0;
+            scrollable.style.top = -this._current_scroll + 'px';
 
-            this.#updateStickyHeaders();
+            this._updateStickyHeaders();
         }
 
         //is there new space at the bottom of the screen?
         //if so, insert a new element there (table or image, as appropriate)
-        if (-1 * this.#current_scroll + this.scrollable_container.offsetHeight < window.innerHeight) {
+        if (-1 * this._current_scroll + this.scrollable_container.offsetHeight < window.innerHeight) {
             if (this.scrollable_container.lastElementChild.tagName == 'IMG' || this.image_files.length == 0) {
-                this.scrollable_container.appendChild(this.#table.cloneNode(true));
+                this.scrollable_container.appendChild(this._table.cloneNode(true));
             } else {
                 let new_element = document.createElement('img');
-                new_element.src = this.#getNextImage();
+                new_element.src = this._getNextImage();
                 new_element.style.maxWidth = "100%";
                 new_element.style.maxHeight = "50vh";
                 new_element.style.display = "block";
@@ -186,7 +191,7 @@ class Scrollable{
     /**
      * Update the "sticky headers" at the top of the table
      */
-    #updateStickyHeaders(){
+    _updateStickyHeaders(){
         if (this.scrollable_container){
             if (this.showStickyHeaders){
                 //create the table header element
@@ -215,4 +220,6 @@ class Scrollable{
     }
 }
 
-module.exports = Scrollable;
+if (typeof module != 'undefined'){
+    module.exports = Scrollable;
+}

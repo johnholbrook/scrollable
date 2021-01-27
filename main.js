@@ -1,4 +1,7 @@
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain } = require('electron')
+
+// start the server
+require("./server/server.js")
 
 global.displayWindow = null;
 global.controllerWindow = null
@@ -16,12 +19,12 @@ function createDisplayWindow () {
     }
   })
 
-  displayWindow.loadFile('display/display.html')
+  displayWindow.loadURL("http://localhost:8080");
 }
 
 function createControllerWindow () {
   controllerWindow = new BrowserWindow({
-    width: process.platform === "win32" ? 650 : 600,
+    width: 650,
     height: 600,
     webPreferences: {
       nodeIntegration: true,
@@ -33,7 +36,8 @@ function createControllerWindow () {
 }
 
 const macMenuTemplate = [
-  {role: "appMenu"}
+  {role: "appMenu"},
+  {role: "editMenu"}
 ];
 
 app.whenReady().then(() => {
@@ -42,15 +46,11 @@ app.whenReady().then(() => {
     Menu.setApplicationMenu(winMenu);
   }
   
-  createDisplayWindow();
+  // createDisplayWindow();
   createControllerWindow();
 
   controllerWindow.on('closed', function () {
     controllerWindow = null;
-  });
-
-  displayWindow.on('closed', function () {
-    displayWindow = null;
   });
 });
 
@@ -64,3 +64,13 @@ app.on('activate', () => {
   if (controllerWindow === null) createControllerWindow();
   if (displayWindow === null) createDisplayWindow();
 })
+
+ipcMain.on("launch-disp-window", () => {
+  if (displayWindow == null){
+    createDisplayWindow();
+
+    displayWindow.on('closed', function () {
+      displayWindow = null;
+    });
+  }
+});

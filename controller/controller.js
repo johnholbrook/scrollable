@@ -1,5 +1,7 @@
-const { remote } = require('electron');
+const { remote, ipcRenderer, ipcMain } = require('electron');
 var displayWindow = remote.getGlobal('displayWindow');
+const csvToArray = require("convert-csv-to-array").convertCSVToArray;
+var ip = require("ip");
 
 // returns true if a file name corresponds to a known image type
 function isImage(name){
@@ -26,7 +28,6 @@ function download(data, filename, type) {
     }
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
     // load data from file
     document.querySelector("#data-file").onchange = () => {
@@ -42,11 +43,20 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // send data to display window
     document.querySelector("#apply-data").onclick = () => {
-        let data = {
-            firstRowHeader: document.querySelector("#first-row-header").checked,
-            data: document.querySelector("#table-data-input").value
-        }
-        displayWindow.webContents.send("set-data", data);
+        let csv_data = document.querySelector("#table-data-input").value;
+        
+        // this csvToArray will fail if the string doesn't end in a newline ¯\_(ツ)_/¯
+        if (csv_data.slice(-1) != "\n") csv_data += "\n";
+
+        let arrayData = csvToArray(csv_data, {
+            type: "array",
+            separator: ","
+        });
+
+        ipcRenderer.send("set-data", {
+            data: arrayData,
+            firstRowHeader: document.querySelector("#first-row-header").checked
+        });
     };
 
     // update images when new directory is selected
@@ -64,7 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
         files.sort();
 
         // Send file list to display window
-        displayWindow.send("set-imgs", files);
+        // displayWindow.send("set-imgs", files);
+        ipcRenderer.send("set-imgs", files);
 
         // set content of "Image Order" card
         document.querySelector("#image-ordering").innerHTML = ""
@@ -92,7 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     new_list.push(child.getAttribute("path"));
                 }
                 console.log(new_list);
-                displayWindow.send("set-imgs", new_list);
+                // displayWindow.send("set-imgs", new_list);
+                ipcRenderer.send("set-imgs", new_list);
             }
         });
     };
@@ -101,52 +113,59 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#scroll_speed").oninput = () => {
         let val = document.querySelector("#scroll_speed").value;
         document.querySelector("#current_scroll_speed").innerHTML= `${val} px/s`;
-        displayWindow.webContents.send("set-scroll-speed", val);
+        ipcRenderer.send("set-scroll-speed", val);
     };
 
     // change font size
     document.querySelector("#font_size").oninput = () => {
         let val = document.querySelector("#font_size").value;
         document.querySelector("#current_font_size").innerHTML = val;
-        displayWindow.webContents.send("set-font-size", val);
+        ipcRenderer.send("set-font-size", val);
     };
 
     // change frame rate
     document.querySelector("#framerate").oninput = () => {
         let val = document.querySelector("#framerate").value;
         document.querySelector("#current_framerate").innerHTML = `${val} FPS`;
-        displayWindow.webContents.send("set-framerate", val);
+        ipcRenderer.send("set-framerate", val);
     };
 
     // set light mode
     document.querySelector("#appearance-light").onclick = () => {
-        displayWindow.webContents.send("set-appearance", "light");
+        ipcRenderer.send("set-appearance", "light");
     }
 
     // set dark mode
     document.querySelector("#appearance-dark").onclick = () => {
-        displayWindow.webContents.send("set-appearance", "dark");
+        ipcRenderer.send("set-appearance", "dark");
     }
 
     // show sticky header
     document.querySelector("#sticky-header").onclick = () => {
-        displayWindow.webContents.send("set-sticky-header", true);
+        ipcRenderer.send("set-sticky-header", true);
     }
 
     // don't show sticky header
     document.querySelector("#no-sticky-header").onclick = () => {
-        displayWindow.webContents.send("set-sticky-header", false);
+        ipcRenderer.send("set-sticky-header", false);
     }
 
-    // // first row is header
-    // document.querySelector("#first-row-header").onclick = () => {
-    //     displayWindow.webContents.send("set-header", true);
-    // }
+    // launch display window
+    document.querySelector("#launch-disp-window").onclick = () => {
+        ipcRenderer.send("launch-disp-window");
+    };
 
-    // // first row is data
-    // document.querySelector("#first-row-data").onclick = () => {
-    //     displayWindow.webContents.send("set-header", false);
-    // }
+    // copy localhost address
+    document.querySelector("#copy-localhost").onclick = () => {
+        navigator.clipboard.writeText("http://localhost:8080");
+    };
 
+    // write local IP address
+    document.querySelector("#local-ip").innerHTML = `http://${ip.address()}:8080`;
+
+    // copy local IP
+    document.querySelector("#copy-ip").onclick = () => {
+        navigator.clipboard.writeText(`http://${ip.address()}:8080`);
+    };
 
 });

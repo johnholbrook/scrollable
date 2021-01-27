@@ -18,6 +18,9 @@
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="appearance-tab" data-bs-toggle="tab" href="#appearance" role="tab" aria-controls="appearance" aria-selected="false">Appearance</a>
             </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="display-tab" data-bs-toggle="tab" href="#display" role="tab" aria-controls="display" aria-selected="false">Display</a>
+              </li>
         </ul>
 
         <div class="tab-content" id="tabContent">
@@ -115,8 +118,31 @@
                     </span>
                 </div>
 
+            </div>
 
-                
+            <!-- DISPLAY tab content -->
+            <div class="tab-pane fade" id="display" role="tabpanel" aria-labelledby="display-tab">
+                <!-- <h1>Display Tab!</h1> -->
+                <div class="card mb-3">
+                    <div class="card-header">View Display in Browser</div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">This Computer:</span>
+                            <span class="input-group-text white flex-grow-1">http://localhost:8080</span>
+                            <button class="btn btn-success" id="copy-localhost">Copy</button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Other Computers:</span>
+                            <span class="input-group-text white flex-grow-1" id="local-ip"></span>
+                            <button class="btn btn-success" id="copy-ip">Copy</button>
+                        </div>
+                        <small>
+                            NOTE: Browser display is not currently supported in Safari. 
+                            Chromium-based browsers (Chrome, Edge, Opera, etc.) and Firefox work fine.
+                        </small>
+                    </div>
+                </div>
+                <button class="btn btn-primary mb-3" id="launch-disp-window">Launch Standalone Display Window</button>
             </div>
         </div>
     </body>
