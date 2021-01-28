@@ -1,8 +1,8 @@
 {
     "name": "Scrollable",
     "author": "John Holbrook",
-    "version": "0.1.0",
-    "description": "My Electron app",
+    "version": "0.2.0",
+    "description": "Generate smooth auto-scrolling tables for your event or livestream",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
