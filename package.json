@@ -1,7 +1,7 @@
 {
     "name": "Scrollable",
     "author": "John Holbrook",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "Generate smooth auto-scrolling tables for your event or livestream",
     "main": "main.js",
     "scripts": {
