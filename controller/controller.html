@@ -2,8 +2,10 @@
     <head>
         <title>Scrollable Controller</title>
         <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <script src="import-jquery.js"></script>
         <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="../node_modules/sortablejs/dist/sortable.umd.js"></script>
+        <script src="editable-table.js"></script>
         <script src="controller.js"></script>
         <link rel="stylesheet" href="controller.css">
     </head>
@@ -27,7 +29,42 @@
 
             <!-- DATA tab content -->
             <div class="tab-pane fade show active" id="data" role="tabpanel" aria-labelledby="data-tab">
-                <textarea class="w-100" name="table-data" id="table-data-input" rows="13"></textarea>
+                <!-- <textarea class="w-100" name="table-data" id="table-data-input" rows="13"></textarea> -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="float-start">Data Editor</span>
+                        <div class="btn-group btn-group-sm float-end">
+                            <button class="btn btn-success" id="add-col">+ Col</button>
+                            <button class="btn btn-danger" id="sub-col">- Col</button>
+                        </div>
+                        <div class="btn-group btn-group-sm float-end mx-3">
+                            <button class="btn btn-success" id="add-row">+ Row</button>
+                            <button class="btn btn-danger" id="sub-row">- Row</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="w-100" id="table-data-input">
+                            <table class="table table-striped">
+                                <tr>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>5</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>9</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="row my-2">
                     <div class="col-8">
                         <input type="file" class="form-control" id="data-file" accept=".csv">

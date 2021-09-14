@@ -28,30 +28,91 @@ function download(data, filename, type) {
     }
 }
 
+function range(i){
+    return [...Array(i).keys()];
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+    // initialize editable table object
+    $('#table-data-input').editableTableWidget();
+    
+    // buttons to add or subtract columns and rows
+    document.querySelector("#add-row").onclick = () => {
+        let new_row = document.createElement("tr");
+        let num_cols = document.querySelector("#table-data-input tr").childElementCount;
+        range(num_cols).forEach(_i => {
+            new_row.innerHTML += "<td>&nbsp;</td>";
+        });
+        document.querySelector("#table-data-input tbody").appendChild(new_row);
+        $('#table-data-input').editableTableWidget();
+    };
+    document.querySelector("#sub-row").onclick = () => {
+        let tbody = document.querySelector("#table-data-input tbody");
+        tbody.removeChild(tbody.lastElementChild);
+    };
+    document.querySelector("#add-col").onclick = () => {
+        document.querySelectorAll("#table-data-input tr").forEach(row => {
+            let new_col = document.createElement("td");
+            new_col.innerHTML = "&nbsp;";
+            row.appendChild(new_col);
+        });
+        $('#table-data-input').editableTableWidget();
+    };
+    document.querySelector("#sub-col").onclick = () => {
+        document.querySelectorAll("#table-data-input tr").forEach(row => {
+            row.removeChild(row.lastElementChild);
+        });
+    };
+
     // load data from file
     document.querySelector("#data-file").onchange = () => {
-        document.querySelector("#data-file").files[0].text().then(text => {
-            document.querySelector("#table-data-input").value = text;
+        document.querySelector("#data-file").files[0].text().then(csv_data => {
+            // convert the CSV data to an array
+            // this csvToArray will fail if the string doesn't end in a newline ¯\_(ツ)_/¯
+            if (csv_data.slice(-1) != "\n") csv_data += "\n";
+            let arrayData = csvToArray(csv_data, {
+                type: "array",
+                separator: ","
+            });
+
+            // build and display a table from the array data
+            let new_tbody = document.createElement("tbody");
+            arrayData.forEach(row => {
+                let new_tr = document.createElement("tr");
+                row.forEach(item => {
+                    new_tr.innerHTML += `<td>${item}</td>`;
+                });
+                new_tbody.appendChild(new_tr);
+            });
+            document.querySelector("#table-data-input table").innerHTML = new_tbody.outerHTML;
+            $('#table-data-input').editableTableWidget();
         });
     };
 
     // save data to file
     document.querySelector("#save-to-file").onclick = () => {
-        download(document.querySelector("#table-data-input").value, "data.csv", "text/plain");
+        let csv_output = "";
+        document.querySelectorAll("#table-data-input tr").forEach(row => {
+            row.querySelectorAll("td").forEach((col, i, arr) => {
+                csv_output += `"${col.innerText}"`;
+                if (i < arr.length-1) csv_output += ",";
+            });
+            csv_output += "\n";
+        });
+        download(csv_output, "data.csv", "text/plain");
     };
     
     // send data to display window
     document.querySelector("#apply-data").onclick = () => {
-        let csv_data = document.querySelector("#table-data-input").value;
-        
-        // this csvToArray will fail if the string doesn't end in a newline ¯\_(ツ)_/¯
-        if (csv_data.slice(-1) != "\n") csv_data += "\n";
-
-        let arrayData = csvToArray(csv_data, {
-            type: "array",
-            separator: ","
+        let arrayData = [];
+        document.querySelectorAll("#table-data-input tr").forEach(row => {
+            let tmp = [];
+            row.querySelectorAll("td").forEach(col => {
+                tmp.push(col.innerText);
+            });
+            arrayData.push(tmp);
         });
+
 
         ipcRenderer.send("set-data", {
             data: arrayData,

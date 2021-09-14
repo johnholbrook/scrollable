@@ -12,6 +12,7 @@
         "bootstrap": "^5.0.0-beta1",
         "convert-csv-to-array": "^1.0.3",
         "ip": "^1.1.5",
+        "jquery": "^3.6.0",
         "socket.io": "^3.1.0",
         "sortablejs": "^1.12.0"
     },

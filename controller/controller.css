@@ -29,3 +29,8 @@ body{
 .white{
     background-color: white;
 }
+
+#table-data-input {
+    max-height: 16.5em;
+    overflow-y: scroll;
+}
