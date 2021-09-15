@@ -6,7 +6,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "dist": "electron-builder"
+        "dist": "node build.js"
     },
     "dependencies": {
         "bootstrap": "^5.0.0-beta1",
@@ -18,7 +18,7 @@
     },
     "devDependencies": {
         "electron": "^11.1.0",
-        "electron-builder": "^22.9.1"
+        "electron-packager": "^15.4.0"
     },
     "build": {
         "appId": "com.fll-timer.scrollable",
